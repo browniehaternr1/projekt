@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sklep Internetowy</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+    color:#222;
+}
+
+header{
+    background:#111827;
+    color:white;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:30px auto;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.card h3{
+    margin:15px 0 10px;
+}
+
+.price{
+    font-size:22px;
+    color:#16a34a;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.add-btn{
+    background:#2563eb;
+    color:white;
+    margin-bottom:10px;
+}
+
+.add-btn:hover{
+    background:#1d4ed8;
+}
+
+.buy-btn{
+    background:#16a34a;
+    color:white;
+}
+
+.buy-btn:hover{
+    background:#15803d;
+}
+
+.cart{
+    margin-top:40px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cart h2{
+    margin-bottom:20px;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid #ddd;
+}
+
+.total{
+    margin-top:20px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.buy-all{
+    margin-top:20px;
+    background:#dc2626;
+    color:white;
+}
+
+.buy-all:hover{
+    background:#b91c1c;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🛒 Mój Sklep Internetowy</h1>
+    <p>Koszyk: <span id="cart-count">0</span> produktów</p>
+</header>
+
+<div class="container">
+
+    <div class="products">
+
+        <div class="card">
+            <img src="image.png" alt="Laptop Gamingowy">
+            <h3>Laptop Gamingowy</h3>
+            <div class="price">3499 zł</div>
+
+            <button class="add-btn"
+                onclick="addToCart('Laptop Gamingowy',3499)">
+                Dodaj do koszyka
+            </button>
+
+            <button class="buy-btn"
+                onclick="buyNow('Laptop Gamingowy',3499)">
+                Kup teraz
+            </button>
+        </div>
+
+        <div class="card">
+            <img src="image copy 2.png" alt="Słuchawki RGB">
+            <h3>Słuchawki RGB</h3>
+            <div class="price">299 zł</div>
+
+            <button class="add-btn"
+                onclick="addToCart('Słuchawki RGB',299)">
+                Dodaj do koszyka
+            </button>
+
+            <button class="buy-btn"
+                onclick="buyNow('Słuchawki RGB',299)">
+                Kup teraz
+            </button>
+        </div>
+
+        <div class="card">
+            <img src="image copy.png" alt="Klawiatura Mechaniczna">
+            <h3>Klawiatura Mechaniczna</h3>
+            <div class="price">499 zł</div>
+
+            <button class="add-btn"
+                onclick="addToCart('Klawiatura Mechaniczna',499)">
+                Dodaj do koszyka
+            </button>
+
+            <button class="buy-btn"
+                onclick="buyNow('Klawiatura Mechaniczna',499)">
+                Kup teraz
+            </button>
+        </div>
+
+    </div>
+
+    <div class="cart">
+        <h2>🛍️ Koszyk</h2>
+
+        <div id="cart-items"></div>
+
+        <div class="total">
+            Razem: <span id="total-price">0</span> zł
+        </div>
+
+        <button class="buy-all" onclick="buyAll()">
+            Kup wszystko
+        </button>
+    </div>
+
+</div>
+
+<script>
+let cart = [];
+let total = 0;
+
+function addToCart(name, price){
+    cart.push({name, price});
+    total += price;
+    updateCart();
+    alert(name + " dodano do koszyka!");
+}
+
+function updateCart(){
+    const cartItems = document.getElementById("cart-items");
+    const totalPrice = document.getElementById("total-price");
+    const cartCount = document.getElementById("cart-count");
+
+    cartItems.innerHTML = "";
+    
+    cart.forEach((item, index) => {
+        const itemElement = document.createElement("div");
+        itemElement.className = "cart-item";
+        itemElement.innerHTML = `
+            <span>${item.name}</span>
+            <span>${item.price} zł</span>
+        `;
+        cartItems.appendChild(itemElement);
+    });
+
+    totalPrice.textContent = total;
+    cartCount.textContent = cart.length;
+}
+
+function buyNow(name, price){
+    alert(
+        "Zakupiono produkt:\n" +
+        name +
+        "\nCena: " +
+        price +
+        " zł"
+    );
+}
+
+function buyAll(){
+    if(cart.length === 0){
+        alert("Koszyk jest pusty!");
+        return;
+    }
+
+    alert(
+        "Dziękujemy za zakupy!\n" +
+        "Łączna kwota: " +
+        total +
+        " zł"
+    );
+
+    cart = [];
+    total = 0;
+    updateCart();
+}
+</script>
+
+</body>
+</html>
